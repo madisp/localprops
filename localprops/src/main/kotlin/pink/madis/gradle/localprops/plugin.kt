@@ -2,7 +2,6 @@ package pink.madis.gradle.localprops
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.Properties
 
