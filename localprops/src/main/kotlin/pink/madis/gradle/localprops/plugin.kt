@@ -2,6 +2,7 @@ package pink.madis.gradle.localprops
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.Properties
 
@@ -28,5 +29,6 @@ class LocalPropertiesPlugin : Plugin<Project> {
 class LocalProperties(
     internal val props: Map<String, String>,
     internal val project: Project) : Map<String, String> by props {
-  fun file(key: String) = project.file(props[key])
+  fun file(key: String) = props[key]?.let { project.file(it) }
+  }
 }
