@@ -1,0 +1,13 @@
+apply plugin: 'java'
+apply plugin: 'kotlin'
+
+dependencies {
+  compileOnly gradleApi()
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+}
+
+sourceSets {
+  main.java.srcDirs += 'src/main/kotlin'
+}
+
+apply from: file('publishing.gradle')

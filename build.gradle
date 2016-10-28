@@ -1,0 +1,20 @@
+buildscript {
+  ext.kotlin_version = '1.0.4'
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.1'
+  }
+}
+
+def versionStr = file('version.txt').text.trim()
+
+allprojects {
+  version = versionStr
+  group = 'pink.madis.gradle'
+  repositories {
+    jcenter()
+  }
+}

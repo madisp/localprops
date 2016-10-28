@@ -1,0 +1,73 @@
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+publishing {
+  publications {
+    pluginMaven(MavenPublication) {
+      from components.java
+      pom.withXml {
+        // ewwww, fix the runtime deps into compile deps
+        asNode().dependencies.'*'.findAll() {
+          it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
+            dep.name == it.artifactId.text()
+          }
+        }.each() {
+          it.scope*.value = 'compile'
+        }
+
+        // add extra metadata into the POM
+        asNode().children().last() + {
+          resolveStrategy = Closure.DELEGATE_FIRST
+          packaging 'jar'
+          name 'localprops'
+          description 'A tiny Gradle plugin to read local.properties files'
+          url 'http://github.com/madisp/localprops'
+          scm {
+            url 'http://github.com/madisp/localprops'
+            connection 'scm:git:git://github.com/madisp/localprops.git'
+            developerConnection 'scm:git:ssh://git@github.com/madisp/localprops.git'
+          }
+          issueManagement {
+            system 'GitHub'
+            url 'http://github.com/madisp/localprops/issues'
+          }
+          developers {
+            developer {
+              id 'madisp'
+              name 'Madis Pink'
+              email 'madis.pink@gmail.com'
+            }
+          }
+          licenses {
+            license {
+              name 'The MIT License'
+              url 'http://opensource.org/licenses/MIT'
+              distribution 'repo'
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+bintray {
+  user = 'madisp'
+  bintray.publications = ['pluginMaven']
+  key = project.properties['BINTRAY_KEY'] ?: ''
+  pkg {
+    repo = 'libs'
+    name = 'localprops'
+    licenses = ['MIT']
+    vcsUrl = 'https://github.com/madisp/localprops'
+
+    version {
+      name = project.version
+      desc = 'Alternative lightweight Gradle plugin for Android libraries'
+      released = new Date()
+      vcsTag = "release-${project.version}"
+    }
+  }
+}
+
+bintrayUpload.dependsOn jar
