@@ -63,7 +63,7 @@ bintray {
 
     version {
       name = project.version
-      desc = 'Alternative lightweight Gradle plugin for Android libraries'
+      desc = 'A tiny Gradle plugin to read local.properties files'
       released = new Date()
       vcsTag = "release-${project.version}"
     }
