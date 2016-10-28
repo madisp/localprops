@@ -30,5 +30,4 @@ class LocalProperties(
     internal val props: Map<String, String>,
     internal val project: Project) : Map<String, String> by props {
   fun file(key: String) = props[key]?.let { project.file(it) }
-  }
 }
